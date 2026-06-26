@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MindBridge — Stanford Grad Wellbeing</title>
+  <title>마음다리 — 스탠퍼드 대학원생 마음 돌봄</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -33,6 +33,7 @@
       overflow: hidden;
     }
 
+    /* ── Top Bar ── */
     .topbar {
       background: var(--cardinal);
       color: white;
@@ -77,6 +78,7 @@
     }
     .topbar-btn:hover { background: rgba(255,255,255,0.28); }
 
+    /* ── Mood Bar ── */
     .mood-bar {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
@@ -113,6 +115,7 @@
       color: white;
     }
 
+    /* ── Chat Window ── */
     .chat-window {
       flex: 1;
       overflow-y: auto;
@@ -123,6 +126,7 @@
       scroll-behavior: smooth;
     }
 
+    /* Date divider */
     .date-divider {
       text-align: center;
       font-size: 0.72rem;
@@ -139,6 +143,7 @@
       background: var(--border);
     }
 
+    /* Message row */
     .msg-row {
       display: flex;
       gap: 8px;
@@ -184,6 +189,7 @@
     }
     .msg-row.bot .msg-time { text-align: left; }
 
+    /* Resource card inside bubble */
     .resource-card {
       margin-top: 10px;
       background: white;
@@ -196,6 +202,7 @@
     .resource-card strong { display: block; margin-bottom: 3px; font-size: 0.88rem; }
     .resource-card span { color: var(--muted); font-size: 0.8rem; }
 
+    /* Quick replies */
     .quick-replies {
       display: flex;
       flex-wrap: wrap;
@@ -219,6 +226,7 @@
       color: white;
     }
 
+    /* Typing indicator */
     .typing-indicator {
       display: flex;
       gap: 8px;
@@ -248,6 +256,7 @@
       30% { transform: translateY(-6px); }
     }
 
+    /* ── Input Bar ── */
     .input-bar {
       background: var(--surface);
       border-top: 1px solid var(--border);
@@ -295,6 +304,7 @@
     .send-btn:hover { background: var(--cardinal-lt); transform: scale(1.07); }
     .send-btn:disabled { background: #ccc; cursor: default; transform: none; }
 
+    /* ── Crisis Banner ── */
     .crisis-banner {
       background: #FFF3CD;
       border-top: 2px solid #FFC107;
@@ -308,6 +318,7 @@
     }
     .crisis-banner a { color: var(--cardinal); font-weight: 700; text-decoration: none; }
 
+    /* Scrollbar */
     .chat-window::-webkit-scrollbar { width: 4px; }
     .chat-window::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
 
@@ -319,158 +330,170 @@
 </head>
 <body>
 
+<!-- Top Bar -->
 <div class="topbar">
   <div class="topbar-avatar">🌉</div>
   <div class="topbar-info">
-    <div class="topbar-name">MindBridge — Stanford Wellness</div>
+    <div class="topbar-name">마음다리 — 스탠퍼드 대학원생 마음 돌봄</div>
     <div class="topbar-status">
-      <span class="dot-online"></span> Always here for you · Confidential
+      <span class="dot-online"></span> 언제든 여기 있어요 · 비밀 보장
     </div>
   </div>
   <div class="topbar-actions">
-    <button class="topbar-btn" onclick="showResources()">📚 Resources</button>
-    <button class="topbar-btn" onclick="showCrisis()">🆘 Crisis</button>
+    <button class="topbar-btn" onclick="showResources()">📚 도움 자료</button>
+    <button class="topbar-btn" onclick="showCrisis()">🆘 위기 상황</button>
   </div>
 </div>
 
+<!-- Mood Check-in -->
 <div class="mood-bar">
-  <span class="mood-label">How are you feeling?</span>
-  <button class="mood-btn" onclick="selectMood(this, 'overwhelmed')">😰 Overwhelmed</button>
-  <button class="mood-btn" onclick="selectMood(this, 'anxious')">😟 Anxious</button>
-  <button class="mood-btn" onclick="selectMood(this, 'lonely')">🫂 Lonely</button>
-  <button class="mood-btn" onclick="selectMood(this, 'burned out')">🔥 Burned out</button>
-  <button class="mood-btn" onclick="selectMood(this, 'okay')">😐 Okay</button>
-  <button class="mood-btn" onclick="selectMood(this, 'good')">😊 Good</button>
+  <span class="mood-label">지금 기분이 어때요?</span>
+  <button class="mood-btn" onclick="selectMood(this, '압도감')">😰 너무 벅차요</button>
+  <button class="mood-btn" onclick="selectMood(this, '불안감')">😟 불안해요</button>
+  <button class="mood-btn" onclick="selectMood(this, '외로움')">🫂 외로워요</button>
+  <button class="mood-btn" onclick="selectMood(this, '번아웃')">🔥 번아웃이에요</button>
+  <button class="mood-btn" onclick="selectMood(this, '그냥 그래요')">😐 그냥 그래요</button>
+  <button class="mood-btn" onclick="selectMood(this, '괜찮아요')">😊 괜찮아요</button>
 </div>
 
+<!-- Chat Window -->
 <div class="chat-window" id="chatWindow">
   <div class="date-divider">Today</div>
 
+  <!-- Opening bot message -->
   <div class="msg-row bot">
     <div class="msg-avatar">🌉</div>
     <div>
       <div class="msg-bubble">
-        Hey. I'm MindBridge — a safe space built for Stanford grad students. 💙<br><br>
-        Whatever's on your mind — advisor stress, imposter syndrome, dissertation anxiety, or just feeling alone at 2am — I'm here. Everything you share stays between us.
+        안녕하세요. 저는 마음다리예요 — 스탠퍼드 대학원생을 위한 안전한 공간이에요. 💙<br><br>
+        지도교수 스트레스, 임포스터 신드롬, 논문 불안, 새벽 2시의 외로움… 무엇이든 괜찮아요. 여기서 나누는 이야기는 비밀이 지켜져요.
       </div>
-      <span class="msg-time">now</span>
+      <span class="msg-time">방금</span>
     </div>
   </div>
 
   <div class="quick-replies" id="initialQR">
-    <button class="qr-btn" onclick="quickReply('I\'m struggling with my advisor')">😔 Advisor issues</button>
-    <button class="qr-btn" onclick="quickReply('I feel like I don\'t belong here')">🧠 Imposter syndrome</button>
-    <button class="qr-btn" onclick="quickReply('I\'m completely burned out')">🔋 Burnout</button>
-    <button class="qr-btn" onclick="quickReply('I feel really isolated and lonely')">🫂 Loneliness</button>
-    <button class="qr-btn" onclick="quickReply('I need help with my dissertation anxiety')">📝 Dissertation stress</button>
+    <button class="qr-btn" onclick="quickReply('지도교수 때문에 힘들어요')">😔 지도교수 문제</button>
+    <button class="qr-btn" onclick="quickReply('내가 여기 있으면 안 될 것 같아요')">🧠 임포스터 신드롬</button>
+    <button class="qr-btn" onclick="quickReply('완전히 번아웃 상태예요')">🔋 번아웃</button>
+    <button class="qr-btn" onclick="quickReply('너무 외롭고 고립된 느낌이에요')">🫂 외로움</button>
+    <button class="qr-btn" onclick="quickReply('논문 불안이 너무 심해요')">📝 논문 스트레스</button>
   </div>
 </div>
 
+<!-- Crisis Line -->
 <div class="crisis-banner" id="crisisBanner" style="display:none">
-  🆘 If you're in crisis: <a href="tel:988">Call/Text 988</a> ·
+  🆘 위기 상황이라면: <a href="tel:988">988 자살예방상담전화</a> ·
   <a href="tel:6507234357">Stanford CAPS: (650) 723-4357</a> ·
-  <a href="#">Crisis Text Line: Text HOME to 741741</a>
+  <a href="#">위기문자: HOME → 741741</a>
 </div>
 
+<!-- Input -->
 <div class="input-bar">
   <div class="input-wrap">
-    <textarea id="userInput" rows="1" placeholder="Share what's on your mind…"
+    <textarea id="userInput" rows="1" placeholder="지금 마음속에 있는 이야기를 꺼내보세요…"
       onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
   </div>
   <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
 </div>
 
 <script>
+  // ── Conversation Engine ──────────────────────────────────────────────────
+
   const RESPONSES = {
     advisor: {
-      keywords: ['advisor', 'supervisor', 'pi ', 'professor', 'phd advisor', 'my advisor'],
+      keywords: ['지도교수', '교수님', '어드바이저', '랩장', '지도', '교수'],
       replies: [
         {
-          text: `That's one of the hardest parts of grad school — your relationship with your advisor can shape everything.\n\nCan you tell me more? Is it about feedback, communication, feeling unsupported, or something else?`,
-          qr: ["They don't give me feedback", "I feel invisible to them", "There's a power dynamic issue", "They're dismissive of my ideas"]
+          text: `지도교수 관계는 대학원 생활에서 정말 힘든 부분 중 하나예요 — 그 관계 하나가 모든 걸 좌우하기도 하죠.\n\n좀 더 얘기해줄 수 있어요? 피드백이 없는 건지, 소통이 안 되는 건지, 지지받지 못한다는 느낌인지, 아니면 다른 문제인가요?`,
+          qr: ["피드백을 전혀 안 줘요", "교수님이 제 존재를 모르는 것 같아요", "권력 불균형이 심해요", "제 아이디어를 무시해요"]
         },
         {
-          text: `Advisor dynamics are genuinely difficult. You're not alone — research shows 40% of PhD students report their advisor relationship as a major stress source.\n\nA few things that have helped others:\n• Scheduled 1:1s with a written agenda you control\n• A peer mentor outside your lab\n• The Ombuds Office — completely confidential`,
-          resource: { title: "Stanford Ombuds Office", desc: "Free, confidential conflict resolution · ombuds.stanford.edu" }
+          text: `지도교수 관계는 정말 어렵습니다. 혼자만의 일이 아니에요 — 연구에 따르면 박사 과정생의 40%가 지도교수 관계를 가장 큰 스트레스 원인으로 꼽아요.\n\n다른 사람들에게 도움이 된 방법들:\n• 직접 작성한 아젠다로 정기 1:1 미팅 요청하기\n• 랩 밖의 동료 멘토 찾기\n• 옴부즈 오피스 — 완전 비밀 보장`,
+          resource: { title: "Stanford 옴부즈 오피스", desc: "무료 · 비밀 보장 갈등 조정 · ombuds.stanford.edu" }
         }
       ]
     },
     imposter: {
-      keywords: ['imposter', 'impostor', "don't belong", 'not smart enough', 'everyone else', 'fraud', 'fake', "shouldn't be here"],
+      keywords: ['임포스터', '자격', '여기 있으면 안', '나만 모르는', '사기꾼', '운으로', '가짜', '부족해', '못 따라가'],
       replies: [
         {
-          text: `What you're feeling has a name — Imposter Syndrome — and it affects over 70% of PhD students at elite universities. The fact that you feel it actually says nothing about your ability.\n\nTell me what's triggering this feeling right now?`,
-          qr: ["I failed an exam or milestone", "My peers seem way smarter", "My advisor questioned my work", "I got in through luck, I feel"]
+          text: `지금 느끼는 감정에는 이름이 있어요 — '임포스터 신드롬'이에요. 최상위 대학의 박사 과정생 70% 이상이 경험해요. 이 감정이 든다는 게 실력과는 아무 관계가 없어요.\n\n지금 이 감정을 촉발한 게 뭔지 얘기해줄 수 있어요?`,
+          qr: ["시험이나 마일스톤에서 실패했어요", "다른 동료들이 훨씬 똑똑해 보여요", "교수님이 제 연구를 의심했어요", "운 좋게 들어온 것 같아요"]
         },
         {
-          text: `Here's something worth sitting with: **Stanford accepted you because of genuine evidence.** Committees don't make charity admits.\n\nImposter syndrome often spikes when we compare our insides to others' outsides. What would you say to a friend who came to you feeling exactly this way?`
+          text: `한번 이렇게 생각해보세요: **스탠퍼드가 당신을 뽑은 건 진짜 근거가 있었기 때문이에요.** 입학 심사위원회는 동정으로 합격시키지 않아요.\n\n임포스터 신드롬은 남의 겉모습과 내 속마음을 비교할 때 가장 심해져요. 똑같은 감정을 느끼는 친구에게 뭐라고 해줄 것 같아요?`,
         }
       ]
     },
     burnout: {
-      keywords: ['burned out', 'burnout', 'exhausted', 'no motivation', "can't work", 'tired', 'drained', 'nothing matters', 'pointless'],
+      keywords: ['번아웃', '지쳤어', '의욕이', '못하겠어', '너무 피곤', '탈진', '의미없어', '아무것도 하기 싫', '공부하기 싫'],
       replies: [
         {
-          text: `Burnout is real and it's serious. It's not laziness — it's your nervous system telling you something needs to change.\n\nOn a scale of 1–10, how depleted do you feel right now?`,
-          qr: ["Completely empty (9–10)", "Very low (7–8)", "Moderate (5–6)", "Mild but creeping (3–4)"]
+          text: `번아웃은 진짜예요, 그리고 심각한 신호예요. 게으른 게 아니에요 — 당신의 신경계가 "뭔가 바뀌어야 해"라고 말하는 거예요.\n\n1점에서 10점 사이로, 지금 얼마나 소진된 느낌인가요?`,
+          qr: ["텅 빈 느낌이에요 (9–10점)", "많이 낮아요 (7–8점)", "중간 정도예요 (5–6점)", "슬슬 오는 것 같아요 (3–4점)"]
         },
         {
-          text: `When you're burned out, the instinct is to push harder — but that usually makes it worse.\n\nThree small things that actually help:\n\n1. **Protect one hour** that's fully yours — no guilt\n2. **Name one thing** that used to excite you about your research\n3. **Talk to someone** — CAPS has same-week appointments now`,
-          resource: { title: "Stanford CAPS — Same-Week Appointments", desc: "Book at wellness.stanford.edu · (650) 723-4357" }
+          text: `번아웃 상태에서는 더 열심히 하려는 충동이 들지만, 그러면 보통 더 나빠져요.\n\n실제로 도움이 되는 작은 세 가지:\n\n1. **나만을 위한 한 시간** 지키기 — 죄책감 없이\n2. **연구에서 설레었던 순간** 하나 떠올리기\n3. **누군가에게 털어놓기** — CAPS에 이번 주 예약 가능해요`,
+          resource: { title: "Stanford CAPS — 당주 예약 가능", desc: "wellness.stanford.edu · (650) 723-4357" }
         }
       ]
     },
     lonely: {
-      keywords: ['lonely', 'alone', 'isolated', 'no friends', 'disconnected', 'nobody', 'socially', "don't fit in"],
+      keywords: ['외로워', '고립', '혼자', '친구가 없', '연결이 안', '아무도', '소외', '어울리지 못', '대화할 사람'],
       replies: [
         {
-          text: `Feeling isolated in grad school is more common than most people admit — everyone's busy, everyone's stressed, and vulnerability feels risky.\n\nHow long have you been feeling this way?`,
-          qr: ["Just lately (weeks)", "Most of this year", "Since I started the program", "It comes and goes"]
+          text: `대학원에서의 고립감은 대부분의 사람들이 인정하는 것보다 훨씬 흔해요 — 모두가 바쁘고, 모두가 스트레스받고, 솔직해지는 게 무섭게 느껴지거든요.\n\n이런 감정이 든 지 얼마나 됐어요?`,
+          qr: ["최근 몇 주 사이에요", "올해 내내 그랬어요", "입학하고 나서부터예요", "왔다 갔다 해요"]
         },
         {
-          text: `Loneliness in grad school often hides in plain sight. You're surrounded by hundreds of people but deeply disconnected — that contrast is painful.\n\nSome things worth trying:\n• **GSE/department cohort events** — low-stakes connection\n• **The Bridge Peer Counseling** — fellow students, 9pm–1am\n• **Hume Writing Center** — work alongside others\n• Even just one coffee with someone outside your lab`,
-          resource: { title: "The Bridge Peer Counseling", desc: "Student-to-student · Free · bridgepeer.stanford.edu · 9pm–1am" }
+          text: `대학원의 외로움은 눈에 잘 안 보여요. 수백 명에 둘러싸여 있으면서도 깊이 단절된 느낌 — 그 대비가 더 아프죠.\n\n해볼 만한 것들:\n• **학과 동기 모임** — 부담 없는 연결\n• **The Bridge 동료 상담** — 같은 학생들이 운영, 매일 밤 9시–1시\n• **Hume 라이팅 센터** — 혼자 말고 같이 작업\n• 랩 밖 누군가와 커피 한 잔`,
+          resource: { title: "The Bridge 동료 상담", desc: "학생 자원봉사 운영 · 무료 · bridgepeer.stanford.edu · 오후 9시–새벽 1시" }
         }
       ]
     },
     dissertation: {
-      keywords: ['dissertation', 'thesis', 'qualifying exam', 'quals', 'proposal', 'writing', 'stuck', 'procrastinat', "can't write", "writer's block"],
+      keywords: ['논문', '디서테이션', '쿼릭', '제안서', '글이 안', '막혀', '미루고', '글을 못', '라이팅', '연구 방향', '위원회'],
       replies: [
         {
-          text: `Dissertation anxiety is almost universal — the stakes feel enormous, the timeline is unclear, and it's often lonely work.\n\nWhat's the biggest block right now? Writing, research direction, fear of judgment, or something else?`,
-          qr: ["I can't make myself start writing", "I feel like my research is worthless", "My committee is hard to please", "I don't see the end anymore"]
+          text: `논문 불안은 거의 모든 대학원생이 겪어요 — 기대치는 높고, 일정은 불명확하고, 외롭게 하는 작업이거든요.\n\n지금 가장 큰 막힘이 뭐예요? 글쓰기, 연구 방향, 평가받는 게 두려운 것, 아니면 다른 무언가인가요?`,
+          qr: ["글 쓰기 시작을 못 하겠어요", "내 연구가 가치 없는 것 같아요", "위원회 교수님들이 까다로워요", "끝이 보이지 않아요"]
         },
         {
-          text: `The dissertation marathon is one of the hardest things humans do. A few reframes that help:\n\n📌 **Done is better than perfect** — your job is to finish, not to write a masterpiece\n📌 **15 minutes counts** — momentum beats marathon sessions\n📌 **Your committee wants you to succeed** — they've seen worse drafts than yours\n\nWould it help to talk through what specifically is blocking you?`
+          text: `논문 마라톤은 인간이 하는 가장 힘든 일 중 하나예요. 도움이 된 관점 전환들:\n\n📌 **완벽한 것보다 완성된 것** — 당신 역할은 마스터피스가 아닌 완성이에요\n📌 **15분도 충분해요** — 긴 세션보다 꾸준한 흐름이 중요해요\n📌 **위원회는 당신 성공을 원해요** — 그 분들은 당신보다 더 엉망인 초고도 봤어요\n\n구체적으로 어디서 막혔는지 같이 얘기해볼까요?`,
         }
       ]
     },
     crisis: {
-      keywords: ['suicide', 'kill myself', 'want to die', 'end it', "can't go on", 'harm', 'hurt myself', 'hopeless', 'no way out'],
+      keywords: ['죽고 싶', '자살', '살기 싫', '끝내고 싶', '못 살겠', '해치고 싶', '희망이 없', '방법이 없', '사라지고 싶'],
       replies: [
         {
-          text: `I hear you, and I'm really glad you're talking right now. What you're feeling is serious, and you deserve real human support — not just a chatbot.\n\n**Please reach out right now:**\n• 🆘 Call or text **988** (Suicide & Crisis Lifeline)\n• 📞 Stanford CAPS urgent line: **(650) 723-4357**\n• 🏥 Vaden Health Center, 24/7\n\nYou matter. This pain is temporary even when it doesn't feel like it.`,
+          text: `지금 이야기해줘서 정말 다행이에요. 느끼는 감정이 심각하다는 걸 알고 있어요 — 챗봇이 아닌 진짜 사람의 도움이 필요해요.\n\n**지금 바로 연락해주세요:**\n• 🆘 전화/문자 **988** (자살예방상담전화)\n• 📞 Stanford CAPS 긴급 라인: **(650) 723-4357**\n• 🏥 Vaden Health Center, 24시간\n\n당신은 소중한 사람이에요. 지금은 느끼지 못해도, 이 고통은 일시적이에요.`,
           isCrisis: true
         }
       ]
     },
     general: [
-      `I hear you. Can you tell me a bit more about what's been going on? I want to understand the full picture.`,
-      `That sounds really hard. You're dealing with a lot. What feels most pressing for you right now?`,
-      `Thank you for sharing that with me. It takes courage to put these feelings into words. What would feel most helpful — just talking it through, or also exploring some resources?`,
-      `Grad school is genuinely one of the most stressful human experiences. The fact that you're here and reflecting on it matters. What's weighing on you most?`
+      `그 말, 들었어요. 어떤 상황인지 좀 더 얘기해줄 수 있어요? 전체 그림을 이해하고 싶어요.`,
+      `정말 힘들었겠다. 많은 걸 감당하고 있네요. 지금 가장 먼저 다루고 싶은 게 뭐예요?`,
+      `털어놓아줘서 고마워요. 이 감정을 말로 꺼내는 게 용기 있는 일이에요. 그냥 얘기하고 싶은지, 아니면 도움이 될 자료도 같이 찾아볼지 — 어떤 게 더 좋을 것 같아요?`,
+      `대학원은 정말로 인간이 경험하는 가장 힘든 것 중 하나예요. 지금 여기서 자신을 돌아보고 있다는 것 자체가 의미 있어요. 요즘 가장 마음에 걸리는 게 뭐예요?`,
     ]
   };
 
   let responseCounters = {};
   let conversationHistory = [];
+  let crisisShown = false;
 
   function getResponse(input) {
     const lower = input.toLowerCase();
+
+    // Crisis check first
     if (RESPONSES.crisis.keywords.some(k => lower.includes(k))) {
       showCrisis();
       return RESPONSES.crisis.replies[0];
     }
+
     for (const [key, data] of Object.entries(RESPONSES)) {
       if (key === 'crisis' || key === 'general') continue;
       if (data.keywords.some(k => lower.includes(k))) {
@@ -479,22 +502,36 @@
         return data.replies[idx];
       }
     }
+
+    // General fallback
     const idx = conversationHistory.length % RESPONSES.general.length;
     return { text: RESPONSES.general[idx] };
   }
 
+  // ── UI Helpers ───────────────────────────────────────────────────────────
+
   function now() {
-    return new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    return new Date().toLocaleTimeString('ko-KR', { hour: 'numeric', minute: '2-digit' });
   }
 
   function buildBotBubble(reply) {
     const wrap = document.createElement('div');
     wrap.className = 'msg-row bot';
+
     let resourceHTML = '';
     if (reply.resource) {
-      resourceHTML = `<div class="resource-card"><strong>📌 ${reply.resource.title}</strong><span>${reply.resource.desc}</span></div>`;
+      resourceHTML = `<div class="resource-card">
+        <strong>📌 ${reply.resource.title}</strong>
+        <span>${reply.resource.desc}</span>
+      </div>`;
     }
-    wrap.innerHTML = `<div class="msg-avatar">🌉</div><div><div class="msg-bubble">${reply.text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}${resourceHTML}</div><span class="msg-time">${now()}</span></div>`;
+
+    wrap.innerHTML = `
+      <div class="msg-avatar">🌉</div>
+      <div>
+        <div class="msg-bubble">${reply.text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}${resourceHTML}</div>
+        <span class="msg-time">${now()}</span>
+      </div>`;
     return wrap;
   }
 
@@ -514,7 +551,11 @@
   function appendUserMsg(text) {
     const row = document.createElement('div');
     row.className = 'msg-row user';
-    row.innerHTML = `<div><div class="msg-bubble">${text.replace(/</g,'&lt;')}</div><span class="msg-time">${now()}</span></div>`;
+    row.innerHTML = `
+      <div>
+        <div class="msg-bubble">${text.replace(/</g,'&lt;')}</div>
+        <span class="msg-time">${now()}</span>
+      </div>`;
     chat().appendChild(row);
   }
 
@@ -522,36 +563,53 @@
     const el = document.createElement('div');
     el.className = 'typing-indicator';
     el.id = 'typingIndicator';
-    el.innerHTML = `<div class="msg-avatar">🌉</div><div class="typing-dots"><span></span><span></span><span></span></div>`;
+    el.innerHTML = `<div class="msg-avatar">🌉</div>
+      <div class="typing-dots"><span></span><span></span><span></span></div>`;
     chat().appendChild(el);
     scrollBottom();
     return el;
   }
 
   function chat() { return document.getElementById('chatWindow'); }
-  function scrollBottom() { const c = chat(); setTimeout(() => c.scrollTop = c.scrollHeight, 50); }
+  function scrollBottom() {
+    const c = chat();
+    setTimeout(() => c.scrollTop = c.scrollHeight, 50);
+  }
+
+  // ── Core Actions ─────────────────────────────────────────────────────────
 
   function sendMessage(text) {
     const input = document.getElementById('userInput');
     const msg = (text || input.value).trim();
     if (!msg) return;
+
+    // Remove initial quick replies
     document.getElementById('initialQR')?.remove();
+
     input.value = '';
     autoResize(input);
     appendUserMsg(msg);
     conversationHistory.push({ role: 'user', text: msg });
     scrollBottom();
+
     const typing = showTyping();
+    const delay = 900 + Math.random() * 700;
+
     setTimeout(() => {
       typing.remove();
       const reply = getResponse(msg);
-      chat().appendChild(buildBotBubble(reply));
-      if (reply.qr) chat().appendChild(buildQR(reply.qr));
+      const bubble = buildBotBubble(reply);
+      chat().appendChild(bubble);
+
+      if (reply.qr) {
+        chat().appendChild(buildQR(reply.qr));
+      }
       scrollBottom();
-    }, 900 + Math.random() * 700);
+    }, delay);
   }
 
   function quickReply(text) {
+    // Remove all quick reply bars
     document.querySelectorAll('.quick-replies').forEach(el => el.remove());
     sendMessage(text);
   }
@@ -559,11 +617,14 @@
   function selectMood(btn, mood) {
     document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    quickReply(`I'm feeling ${mood} right now`);
+    quickReply(`지금 ${mood} 느낌이에요`);
   }
 
   function handleKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   }
 
   function autoResize(el) {
@@ -572,10 +633,11 @@
   }
 
   function showResources() {
+    const reply = {
+      text: `스탠퍼드 대학원생을 위한 주요 지원 자료입니다:\n\n**🧠 정신건강**\n• CAPS (상담·심리 서비스): (650) 723-4357\n• The Bridge 동료 상담: 매일 밤 9시–새벽 1시\n\n**📚 학업 지원**\n• Hume 라이팅 센터: 무료 상담\n• 대학원 학사 프로그램: gaps.stanford.edu\n\n**💛 커뮤니티**\n• GSC (대학원 학생회): 각종 행사·모임\n• 대학원 생활 지원실: glo.stanford.edu\n\n**🆘 위기 상황**\n• 988 자살예방상담전화 (전화/문자)\n• Vaden Health Center: 24시간 긴급 진료`,
+    };
     document.querySelectorAll('.quick-replies').forEach(el => el.remove());
-    chat().appendChild(buildBotBubble({
-      text: `Here are the key resources at Stanford for grad student wellbeing:\n\n**🧠 Mental Health**\n• CAPS (Counseling & Psych Services): (650) 723-4357\n• The Bridge Peer Counseling: 9pm–1am nightly\n\n**📚 Academic Support**\n• Hume Center for Writing: free consultations\n• Graduate Academic Programs: gaps.stanford.edu\n\n**💛 Community**\n• GSC (Grad Student Council): events & community\n• Graduate Life Office: glo.stanford.edu\n\n**🆘 Crisis**\n• 988 Suicide & Crisis Lifeline (call or text)\n• Vaden Health Center: 24/7 urgent care`
-    }));
+    chat().appendChild(buildBotBubble(reply));
     scrollBottom();
   }
 
